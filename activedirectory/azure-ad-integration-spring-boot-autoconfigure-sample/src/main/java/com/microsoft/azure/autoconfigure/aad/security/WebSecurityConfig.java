@@ -31,16 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AzureADJwtTokenFilter aadJwtFilter;
 
-    @Bean
-    public UserInfoRestTemplateCustomizer getUserInfoRestTemplateCustomizer() {
-        return new UserInfoRestTemplateCustomizer() {
-            //@Override
-            public void customize(OAuth2RestTemplate template) {
-                template.setAccessTokenProvider(new MyAuthorizationCodeAccessTokenProvider());
-            }
-        };
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -54,20 +44,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.addFilterBefore(aadJwtFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-    protected class MyAuthorizationCodeAccessTokenProvider extends AuthorizationCodeAccessTokenProvider {
-        public MyAuthorizationCodeAccessTokenProvider() {
-            setTokenRequestEnhancer(new DefaultRequestEnhancer() {
-                @Override
-                public void enhance(AccessTokenRequest request,
-                                    OAuth2ProtectedResourceDetails resource,
-                                    MultiValueMap<String, String> form,
-                                    HttpHeaders headers) {
-                    super.enhance(request, resource, form, headers);
-                    form.set("resource", "https://graph.windows.net/");
-                }
-            });
-        }
     }
 }
