@@ -87,7 +87,7 @@ public class TodolistController {
                 .getAuthentication()
                 .getPrincipal();
         if (current.isMemberOf(
-                new UserGroup("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "group1"))) {
+                new UserGroup("fa7ad436-d32b-464a-928d-43e642711c6c", "group1"))) {
             final List<TodoItem> find = todoList.stream().filter(i -> i.getID() == id).collect(Collectors.toList());
             if (!find.isEmpty()) {
                 todoList.remove(todoList.indexOf(find.get(0)));
